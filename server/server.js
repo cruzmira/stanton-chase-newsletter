@@ -18,8 +18,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com';
 
 if (!GEMINI_API_KEY) {
-    console.error('FATAL: GEMINI_API_KEY environment variable is not set.');
-    process.exit(1);
+    console.warn('WARNING: GEMINI_API_KEY environment variable is not set. API proxy will not work.');
 }
 
 // Rate limiting: 100 requests per 15 minutes per IP
