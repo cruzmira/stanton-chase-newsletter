@@ -5,10 +5,11 @@ import { ParsedContent, GroundingSource, NewsletterData } from '../types';
 // In production, API_KEY will be "PLACEHOLDER" — route through backend proxy
 const apiKey = process.env.API_KEY || '';
 const isProduction = !apiKey || apiKey === 'PLACEHOLDER';
+const proxyBaseUrl = typeof window !== 'undefined' ? `${window.location.origin}/api-proxy` : '/api-proxy';
 
 const ai = new GoogleGenAI({
   apiKey: isProduction ? 'PLACEHOLDER' : apiKey,
-  ...(isProduction && { httpOptions: { baseUrl: '/api-proxy' } }),
+  ...(isProduction && { httpOptions: { baseUrl: proxyBaseUrl } }),
 });
 
 function parseNewsletterMarkdown(markdown: string): ParsedContent {
