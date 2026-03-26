@@ -62,7 +62,7 @@ export const generateNewsletter = async (topic: string, language: string, domain
     ? `\nIMPORTANT: Focus your research EXCLUSIVELY on the following domains: ${domains.trim()}. Only cite and use sources from these domains. Do not use any other sources.\n`
     : '';
 
-  const textPrompt = `You are an expert real estate market analyst working for CBRE. Your task is to generate a professional newsletter about the topic: "${topic}". The entire response must be in ${languageName}.
+  const textPrompt = `You are an expert executive search and leadership consulting analyst working for Stanton Chase. Your task is to generate a professional newsletter about the topic: "${topic}". The entire response must be in ${languageName}.
 Use your deep search capabilities to find the most relevant and up-to-date information.${domainRestriction}
 Structure your response *strictly* in the following Markdown format. Do not add any other text or explanations before or after this structure.
 

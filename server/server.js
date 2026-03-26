@@ -136,6 +136,6 @@ wss.on('connection', (clientWs, req) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`CBRE Newsletter Server running on port ${PORT}`);
+    console.log(`Stanton Chase Newsletter Server running on port ${PORT}`);
     console.log(`API proxy: /api-proxy/* -> ${GEMINI_BASE_URL}/*`);
 });

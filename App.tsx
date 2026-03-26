@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Language, NewsletterData } from './types';
 import { TRANSLATIONS } from './constants';
 import { generateNewsletter } from './services/geminiService';
@@ -13,7 +13,7 @@ import { LANGUAGES } from './constants';
 import LoginScreen from './components/LoginScreen';
 import LandingPage from './components/LandingPage';
 
-// Header Component
+// Header Component with logo
 const Header: React.FC<{
   language: Language;
   setLanguage: (lang: Language) => void;
@@ -25,39 +25,38 @@ const Header: React.FC<{
   const currentLang = LANGUAGES.find(l => l.code === language);
 
   return (
-    <header className="bg-[#003F2D] sticky top-0 z-50">
+    <header className="bg-[#062152] sticky top-0 z-50 border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
-            <img src="/CBRE_white.png" alt="CBRE" className="h-7" />
-            <span className="text-xl font-semibold text-white">Newsletter Generator</span>
+            <img src="/logo-blue.svg" alt="Stanton Chase" className="h-8 brightness-0 invert" />
           </div>
-          <nav className="flex items-center space-x-2 text-sm font-medium text-white">
-            <button onClick={() => setShowAboutPage(true)} className="hover:bg-white/20 p-2 rounded-md transition-colors">{t('aboutCbre')}</button>
+          <nav className="flex items-center space-x-1 text-sm font-medium text-white/80">
+            <button onClick={() => setShowAboutPage(true)} className="hover:bg-white/10 hover:text-white px-3 py-2 rounded-lg transition-all">{t('aboutStantonChase')}</button>
             <div className="relative">
-              <button onClick={() => setPhoneOpen(!phoneOpen)} className="flex items-center hover:bg-white/20 p-2 rounded-md transition-colors">
-                <PhoneIcon className="w-4 h-4 mr-1" />
+              <button onClick={() => setPhoneOpen(!phoneOpen)} className="flex items-center hover:bg-white/10 hover:text-white px-3 py-2 rounded-lg transition-all">
+                <PhoneIcon className="w-4 h-4 mr-1.5" />
                 <span>{t('phone')}</span>
               </button>
               {phoneOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-[#2d3748] text-white rounded-md shadow-lg p-2 text-center">
-                  +420<br />224 854<br />060
+                <div className="absolute right-0 mt-2 w-48 bg-[#0a2d6e] text-white rounded-xl shadow-2xl p-4 text-center border border-white/10">
+                  <span className="text-sm font-medium">+420 222 990 210</span>
                 </div>
               )}
             </div>
             <div className="relative">
-              <button onClick={() => setLangOpen(!langOpen)} className="flex items-center hover:bg-white/20 p-2 rounded-md transition-colors">
+              <button onClick={() => setLangOpen(!langOpen)} className="flex items-center hover:bg-white/10 hover:text-white px-3 py-2 rounded-lg transition-all">
                 <span>{currentLang?.flag}</span>
                 <span className="mx-1">{currentLang?.name}</span>
                 <ChevronDownIcon className="w-4 h-4" />
               </button>
               {langOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1">
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-2xl py-1 overflow-hidden">
                   {LANGUAGES.map(lang => (
                     <button
                       key={lang.code}
                       onClick={() => { setLanguage(lang.code); setLangOpen(false); }}
-                      className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      className="flex items-center w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <span className="mr-2">{lang.flag}</span>
                       {lang.name}
@@ -75,87 +74,145 @@ const Header: React.FC<{
 
 // Footer Component
 const Footer: React.FC = () => (
-  <footer className="text-center py-6 text-sm text-gray-500">
-    <p>© {new Date().getFullYear()} CBRE AI Labs. Všechna práva vyhrazena.</p>
+  <footer className="text-center py-8 text-xs text-gray-400">
+    <p>© {new Date().getFullYear()} Stanton Chase. All rights reserved. · Powered by Encounte s.r.o.</p>
   </footer>
 );
 
 // Initial View Component
 const InitialView: React.FC<{ t: (key: string) => string }> = ({ t }) => (
-  <div className="bg-white border border-gray-200 rounded-lg p-8 mt-12 text-center max-w-4xl mx-auto">
-    <h3 className="text-2xl font-semibold text-gray-800 mb-2">{t('readyToCreate')}</h3>
-    <p className="text-gray-600 mb-8 max-w-2xl mx-auto">{t('readyToCreateSubtitle')}</p>
-    <div className="grid md:grid-cols-2 gap-8 text-left">
-      <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-        <div className="w-12 h-12 bg-[#003F2D]/10 text-[#003F2D] rounded-lg flex items-center justify-center mb-4">
-          <DocumentIcon className="w-6 h-6" />
+  <div className="bg-white border border-gray-100 rounded-2xl p-10 mt-12 text-center max-w-4xl mx-auto shadow-sm">
+    <h3 className="text-2xl font-bold text-gray-900 mb-2">{t('readyToCreate')}</h3>
+    <p className="text-gray-500 mb-10 max-w-2xl mx-auto">{t('readyToCreateSubtitle')}</p>
+    <div className="grid md:grid-cols-2 gap-6 text-left">
+      <div className="bg-gradient-to-br from-[#f0f5ff] to-[#f8fafc] p-6 rounded-xl border border-[#e0eaff]">
+        <div className="w-11 h-11 bg-[#1054cc]/10 text-[#1054cc] rounded-xl flex items-center justify-center mb-4">
+          <DocumentIcon className="w-5 h-5" />
         </div>
-        <h4 className="font-semibold text-lg text-gray-800 mb-2">{t('aiResearch')}</h4>
-        <p className="text-gray-600 text-sm">{t('aiResearchDesc')}</p>
+        <h4 className="font-semibold text-gray-900 mb-1.5">{t('aiResearch')}</h4>
+        <p className="text-gray-500 text-sm leading-relaxed">{t('aiResearchDesc')}</p>
       </div>
-      <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-        <div className="w-12 h-12 bg-[#003F2D]/10 text-[#003F2D] rounded-lg flex items-center justify-center mb-4">
-          <SparklesIcon className="w-6 h-6" />
+      <div className="bg-gradient-to-br from-[#f0f5ff] to-[#f8fafc] p-6 rounded-xl border border-[#e0eaff]">
+        <div className="w-11 h-11 bg-[#1054cc]/10 text-[#1054cc] rounded-xl flex items-center justify-center mb-4">
+          <SparklesIcon className="w-5 h-5" />
         </div>
-        <h4 className="font-semibold text-lg text-gray-800 mb-2">{t('instantBranding')}</h4>
-        <p className="text-gray-600 text-sm">{t('instantBrandingDesc')}</p>
+        <h4 className="font-semibold text-gray-900 mb-1.5">{t('instantBranding')}</h4>
+        <p className="text-gray-500 text-sm leading-relaxed">{t('instantBrandingDesc')}</p>
       </div>
     </div>
   </div>
 );
 
-// Newsletter Display Component
+// Newsletter Display Component — premium design
 const NewsletterDisplay: React.FC<{ newsletterData: NewsletterData, t: (key: string) => string, topic: string }> = ({ newsletterData, t, topic }) => {
   const { image, content, sources } = newsletterData;
   return (
-    <div className="mt-8 max-w-4xl mx-auto space-y-8">
-      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md">
-        <div className="bg-[#003F2D] text-white p-6">
-          <img src="/CBRE_white.png" alt="CBRE" className="h-8 mb-1" />
-          <p className="text-sm">{t('cbreOverview')}</p>
+    <div className="mt-10 max-w-4xl mx-auto space-y-6">
+      <div className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
+
+        {/* Newsletter header with logo */}
+        <div className="bg-[#062152] px-8 py-6 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <img src="/logo-blue.svg" alt="Stanton Chase" className="h-7 brightness-0 invert" />
+            <div className="w-px h-8 bg-white/20" />
+            <span className="text-white/60 text-sm font-light tracking-wide">{t('stantonChaseOverview')}</span>
+          </div>
         </div>
-        {image && <img src={image} alt={content.title} className="w-full h-64 object-cover" />}
-        <div className="p-8">
-          <h3 className="text-3xl font-bold text-gray-900 mb-4">{content.title}</h3>
-          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{content.intro}</p>
 
-          <h4 className="text-2xl font-bold text-gray-900 mt-8 mb-4 border-b pb-2">{t('keyPoints')}</h4>
-          <ul className="space-y-3">
+        {/* Hero image with gradient overlay */}
+        {image && (
+          <div className="relative">
+            <img src={image} alt={content.title} className="w-full h-72 object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+          </div>
+        )}
+
+        {/* Content body */}
+        <div className="px-10 py-8">
+          {/* Title */}
+          <h3 className="text-3xl font-bold text-gray-900 leading-tight mb-6">{content.title}</h3>
+
+          {/* Intro with drop cap effect */}
+          <div className="text-gray-600 text-[15px] leading-[1.8] whitespace-pre-wrap mb-10 first-letter:text-4xl first-letter:font-bold first-letter:text-[#1054cc] first-letter:float-left first-letter:mr-2 first-letter:leading-none">
+            {content.intro}
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center gap-4 mb-8">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+            <span className="text-xs font-semibold text-[#1054cc] tracking-[0.2em] uppercase">{t('keyPoints')}</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+          </div>
+
+          {/* Key points as cards */}
+          <div className="space-y-3 mb-10">
             {content.keyPoints.map((point, index) => (
-              <li key={index} className="flex items-start">
-                <CheckCircleIcon className="w-6 h-6 text-[#003F2D] mr-3 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-700">{point}</span>
-              </li>
+              <div key={index} className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-[#f7f9ff] to-[#fafbff] border border-[#edf1ff] hover:border-[#d4dfff] transition-colors">
+                <div className="w-7 h-7 rounded-lg bg-[#1054cc] flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-white text-xs font-bold">{index + 1}</span>
+                </div>
+                <span className="text-gray-700 text-[15px] leading-relaxed">{point}</span>
+              </div>
             ))}
-          </ul>
+          </div>
 
-          <div className="text-center mt-12">
-            <a href="https://www.cbre.cz" target="_blank" rel="noopener noreferrer" className="inline-block bg-[#003F2D] text-white font-bold py-3 px-8 rounded-md hover:bg-[#002A1E] transition-colors">
-              {t('moreOnCbre')}
+          {/* CTA */}
+          <div className="text-center">
+            <a href="https://www.stantonchase.com" target="_blank" rel="noopener noreferrer"
+              className="inline-block bg-[#1054cc] text-white font-semibold py-3 px-10 rounded-xl hover:bg-[#0d44ab] transition-all duration-200 hover:shadow-lg hover:shadow-[#1054cc]/20">
+              {t('moreOnStantonChase')}
             </a>
           </div>
         </div>
-        <div className="bg-gray-50 px-8 py-4 border-t">
-          <p className="text-xs text-gray-500 text-center">{t('disclaimer')}</p>
+
+        {/* Disclaimer footer */}
+        <div className="bg-gray-50 px-10 py-4 border-t border-gray-100">
+          <p className="text-[11px] text-gray-400 text-center leading-relaxed">{t('stantonChaseDisclaimer')}</p>
         </div>
       </div>
 
+      {/* Sources — compact, just domain names */}
       {sources.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-md">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">{t('sources')}</h3>
-          <ul className="space-y-2 list-disc list-inside">
-            {sources.map((source, index) => source.web && (
-              <li key={index}>
-                <a href={source.web.uri} target="_blank" rel="noopener noreferrer" className="text-[#003F2D] hover:underline break-all">
-                  {source.web.title || source.web.uri}
+        <div className="bg-white rounded-2xl px-8 py-5 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-2 mb-3">
+            <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-500">{t('sources')}</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {sources.map((source, index) => {
+              if (!source.web) return null;
+              let domain = source.web.title || '';
+              if (!domain) {
+                try { domain = new URL(source.web.uri).hostname.replace('www.', ''); } catch { domain = source.web.uri; }
+              }
+              return (
+                <a
+                  key={index}
+                  href={source.web.uri}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 hover:bg-[#f0f5ff] border border-gray-100 hover:border-[#d4dfff] text-sm text-gray-600 hover:text-[#1054cc] transition-all"
+                >
+                  <span className="truncate max-w-[200px]">{domain}</span>
+                  <svg className="w-3 h-3 opacity-40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
                 </a>
-              </li>
-            ))}
-          </ul>
+              );
+            })}
+          </div>
         </div>
       )}
+
+      {/* Export button */}
       <div className="text-center py-4">
-        <button onClick={() => exportToHtml(newsletterData, topic)} className="bg-[#003F2D] text-white font-bold py-3 px-8 rounded-md hover:bg-[#002A1E] transition-colors">
+        <button onClick={() => exportToHtml(newsletterData, topic)}
+          className="inline-flex items-center gap-2 bg-[#062152] text-white font-semibold py-3 px-8 rounded-xl hover:bg-[#0a2d6e] transition-all duration-200 hover:shadow-lg">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
           {t('exportHtml')}
         </button>
       </div>
@@ -166,8 +223,19 @@ const NewsletterDisplay: React.FC<{ newsletterData: NewsletterData, t: (key: str
 // About Page Component
 const AboutPage: React.FC<{ t: (key: string) => string }> = ({ t }) => (
   <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
-    <h2 className="text-3xl font-bold text-[#003F2D]">{t('aboutCbrePageTitle')}</h2>
-    <p className="mt-4 text-lg text-gray-600">{t('aboutCbrePageContent')}</p>
+    <h2 className="text-3xl font-bold text-[#062152]">{t('aboutStantonChasePageTitle')}</h2>
+    <p className="mt-4 text-lg text-gray-500 leading-relaxed">{t('aboutStantonChasePageContent')}</p>
+  </div>
+);
+
+// Loading animation
+const LoadingState: React.FC<{ t: (key: string) => string }> = ({ t }) => (
+  <div className="flex flex-col items-center justify-center mt-16 gap-4">
+    <div className="relative w-12 h-12">
+      <div className="absolute inset-0 rounded-full border-2 border-[#1054cc]/20" />
+      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#1054cc] animate-spin" />
+    </div>
+    <span className="text-gray-500 text-sm">{t('generatingButton')}...</span>
   </div>
 );
 
@@ -188,7 +256,7 @@ const App: React.FC = () => {
   }, [language]);
 
   const handleLogin = (password: string): boolean => {
-    if (password === 'cbre*') {
+    if (password === 'stanton*') {
       setIsAuthenticated(true);
       return true;
     }
@@ -214,7 +282,6 @@ const App: React.FC = () => {
 
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang);
-    // Reset views if language changes
     setNewsletterData(null);
     setShowAboutPage(false);
     setError(null);
@@ -234,58 +301,58 @@ const App: React.FC = () => {
   }
 
   if (showLanding) {
-    return <LandingPage onEnterApp={() => setShowLanding(false)} t={t} />;
+    return <LandingPage onEnterApp={() => setShowLanding(false)} t={t} language={language} setLanguage={handleSetLanguage} />;
   }
 
   return (
-    <div className="min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col font-sans bg-[#f8f9fb]">
       <Header language={language} setLanguage={handleSetLanguage} t={t} setShowAboutPage={handleSetShowAboutPage} />
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {!showAboutPage && (
-          <div className="text-center">
-            <h2 className="text-4xl font-bold text-[#003F2D]">{t('mainTitle')}</h2>
-            <p className="mt-2 text-lg text-gray-600">{t('mainSubtitle')}</p>
-            <div className="mt-8 max-w-xl mx-auto space-y-3">
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-[#062152] mb-2">{t('mainTitle')}</h2>
+            <p className="text-gray-500 mb-8">{t('mainSubtitle')}</p>
+            <div className="space-y-4">
               <div className="relative">
                 <textarea
                   value={topic}
                   onChange={(e) => setTopic(e.target.value.slice(0, 2000))}
                   placeholder={t('inputPlaceholder')}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-[#003F2D] focus:border-[#003F2D] transition resize-none"
+                  className="w-full px-5 py-4 border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-[#1054cc]/20 focus:border-[#1054cc] transition-all resize-none bg-white text-gray-800"
                   disabled={isLoading}
                   rows={4}
                   maxLength={2000}
                 />
-                <span className="absolute bottom-2 right-3 text-xs text-gray-400">{topic.length}/2000</span>
+                <span className="absolute bottom-3 right-4 text-xs text-gray-300">{topic.length}/2000</span>
               </div>
               <button
                 onClick={handleGenerate}
                 disabled={isLoading || !topic}
-                className={`w-full px-6 py-3 font-semibold text-white rounded-md shadow-sm transition-colors ${isLoading || !topic
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-[#003F2D] hover:bg-[#002A1E]'
+                className={`w-full px-6 py-3.5 font-semibold text-white rounded-xl shadow-sm transition-all duration-200 ${isLoading || !topic
+                  ? 'bg-gray-300 cursor-not-allowed'
+                  : 'bg-[#1054cc] hover:bg-[#0d44ab] hover:shadow-lg hover:shadow-[#1054cc]/15'
                   }`}
               >
                 {isLoading ? t('generatingButton') : t('generateButton')}
               </button>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1 text-left">{t('domainsLabel')}</label>
-              <input
-                type="text"
-                value={domains}
-                onChange={(e) => setDomains(e.target.value)}
-                placeholder={t('domainsPlaceholder')}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#003F2D] focus:border-[#003F2D] transition text-sm"
-                disabled={isLoading}
-              />
-              <p className="text-xs text-gray-400 mt-1 text-left">{t('domainsHint')}</p>
+              <div className="text-left">
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">{t('domainsLabel')}</label>
+                <input
+                  type="text"
+                  value={domains}
+                  onChange={(e) => setDomains(e.target.value)}
+                  placeholder={t('domainsPlaceholder')}
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-[#1054cc]/20 focus:border-[#1054cc] transition-all text-sm bg-white"
+                  disabled={isLoading}
+                />
+                <p className="text-[11px] text-gray-400 mt-1.5">{t('domainsHint')}</p>
+              </div>
             </div>
           </div>
         )}
 
-        {isLoading && <div className="text-center mt-12 text-gray-600">{t('generatingButton')}...</div>}
-        {error && <div className="text-center mt-12 text-red-600 bg-red-100 border border-red-300 rounded-md p-4 max-w-xl mx-auto">{error}</div>}
+        {isLoading && <LoadingState t={t} />}
+        {error && <div className="text-center mt-12 text-red-600 bg-red-50 border border-red-200 rounded-xl p-4 max-w-xl mx-auto text-sm">{error}</div>}
 
         {showAboutPage && <AboutPage t={t} />}
         {!showAboutPage && !isLoading && !error && !newsletterData && <InitialView t={t} />}
