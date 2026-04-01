@@ -1,6 +1,6 @@
-const https = require('https');
+import https from 'https';
 
-exports.handler = async (event) => {
+export const handler = async (event) => {
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
@@ -25,7 +25,7 @@ exports.handler = async (event) => {
     };
   }
 
-  // Extract the Gemini API path from the function path
+  // Extract the Gemini API path
   // event.path = /.netlify/functions/api-proxy/v1beta/models/gemini-2.5-pro:generateContent
   const targetPath = event.path.replace('/.netlify/functions/api-proxy', '') || '/';
   const targetUrl = `https://generativelanguage.googleapis.com${targetPath}`;
