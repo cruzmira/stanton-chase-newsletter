@@ -3,14 +3,7 @@
   publish = "dist"
   functions = "netlify/functions"
 
-# Proxy /api-proxy/* to the serverless function
-[[redirects]]
-  from = "/api-proxy/*"
-  to = "/.netlify/functions/api-proxy/:splat"
-  force = true
-  status = 200
-
-# SPA fallback
+# SPA fallback (api-proxy routing handled by Functions v2 config.path)
 [[redirects]]
   from = "/*"
   to = "/index.html"
