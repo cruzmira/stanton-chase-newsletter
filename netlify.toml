@@ -1,0 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# Proxy /api-proxy/* to the serverless function
+[[redirects]]
+  from = "/api-proxy/*"
+  to = "/.netlify/functions/api-proxy/:splat"
+  status = 200
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

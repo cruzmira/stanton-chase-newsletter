@@ -17,8 +17,11 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react()],
     define: {
-      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+      // In production (Netlify), API_KEY must NOT be embedded in frontend JS.
+      // The Netlify Function proxy handles API key injection server-side.
+      // Only inject for local dev when GEMINI_API_KEY is explicitly set.
+      'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY || ''),
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || '')
     },
     resolve: {
       alias: {
