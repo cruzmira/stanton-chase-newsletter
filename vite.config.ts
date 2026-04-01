@@ -17,10 +17,9 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react()],
     define: {
-      // Inject API key at build time from Netlify env vars
-      // Netlify has the variable set as API_KEY
-      'process.env.API_KEY': JSON.stringify(env.API_KEY || env.GEMINI_API_KEY || ''),
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.API_KEY || env.GEMINI_API_KEY || '')
+      // API key must NOT be in frontend - Netlify Function proxy handles it
+      'process.env.API_KEY': JSON.stringify(''),
+      'process.env.GEMINI_API_KEY': JSON.stringify('')
     },
     resolve: {
       alias: {
