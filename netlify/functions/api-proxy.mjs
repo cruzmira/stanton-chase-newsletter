@@ -31,7 +31,7 @@ export default async (request) => {
         'Content-Type': 'application/json',
         'x-goog-api-key': apiKey,
       },
-      body: request.method !== 'GET' && request.method !== 'HEAD' ? request.body : undefined,
+      body: (request.method !== 'GET' && request.method !== 'HEAD') ? await request.text() : undefined,
     });
 
     const body = await proxyResponse.text();
