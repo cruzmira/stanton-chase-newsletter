@@ -62,21 +62,32 @@ export const generateNewsletter = async (topic: string, language: string, domain
     ? `\nIMPORTANT: Focus your research EXCLUSIVELY on the following domains: ${domains.trim()}. Only cite and use sources from these domains. Do not use any other sources.\n`
     : '';
 
+  const today = new Date().toISOString().split('T')[0]; // e.g. "2026-04-15"
+
   const textPrompt = `You are an expert executive search and leadership consulting analyst working for Stanton Chase. Your task is to generate a professional newsletter about the topic: "${topic}". The entire response must be in ${languageName}.
-Use your deep search capabilities to find the most relevant and up-to-date information.${domainRestriction}
+Today's date is ${today}. Use your deep search capabilities to find the most relevant and up-to-date information. Prioritize sources published within the last 30 days.${domainRestriction}
+
+CRITICAL RULES:
+- Report ONLY on confirmed facts, events that have already happened, published data, and verified information.
+- DO NOT make predictions, forecasts, or speculate about future developments.
+- Every key point must be grounded in a specific, verifiable source (news article, report, study, official statement).
+- Use past tense or present tense for things that are true NOW. Never use phrases like "is expected to", "will likely", "is predicted to", "could potentially", "may lead to", "in the coming years".
+- If a statistic or claim is mentioned, it must come from an actual published source found in your search.
+- Focus on WHAT HAPPENED, WHO said/did WHAT, and WHAT the current situation IS — not what might happen next.
+
 Structure your response *strictly* in the following Markdown format. Do not add any other text or explanations before or after this structure.
 
 # [A compelling and professional title for the newsletter]
 
-[A detailed introductory paragraph summarizing the key findings.]
+[A detailed introductory paragraph summarizing the key findings based on verified facts and recent events.]
 
 ## Key points
 
-- [First key point]
-- [Second key point]
-- [Third key point]
-- [Fourth key point]
-- [Fifth key point]
+- [First key point — based on a specific fact, event, or data point]
+- [Second key point — based on a specific fact, event, or data point]
+- [Third key point — based on a specific fact, event, or data point]
+- [Fourth key point — based on a specific fact, event, or data point]
+- [Fifth key point — based on a specific fact, event, or data point]
 `;
 
   const imagePrompt = `Generate a professional, high-quality, and thematic stock photo style image for a business newsletter about "${topic}". The image should be clean, modern, and visually appealing. Avoid text and logos.`;
