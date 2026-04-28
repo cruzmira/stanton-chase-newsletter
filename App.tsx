@@ -3,6 +3,7 @@ import { Language, NewsletterData } from './types';
 import { TRANSLATIONS } from './constants';
 import { generateNewsletter } from './services/geminiService';
 import { exportToHtml } from './utils/exportHtml';
+import { exportToPdf } from './utils/exportPdf';
 
 import PhoneIcon from './components/icons/PhoneIcon';
 import ChevronDownIcon from './components/icons/ChevronDownIcon';
@@ -106,6 +107,20 @@ const InitialView: React.FC<{ t: (key: string) => string }> = ({ t }) => (
 // Newsletter Display Component — premium design
 const NewsletterDisplay: React.FC<{ newsletterData: NewsletterData, t: (key: string) => string, topic: string }> = ({ newsletterData, t, topic }) => {
   const { image, content, sources } = newsletterData;
+  const [isPdfExporting, setIsPdfExporting] = useState(false);
+
+  const handleExportPdf = async () => {
+    if (isPdfExporting) return;
+    setIsPdfExporting(true);
+    try {
+      await exportToPdf(newsletterData, topic);
+    } catch (err) {
+      console.error('PDF export failed:', err);
+      alert(t('exportPdfError'));
+    } finally {
+      setIsPdfExporting(false);
+    }
+  };
   return (
     <div className="mt-10 max-w-4xl mx-auto space-y-6">
       <div className="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100">
@@ -206,14 +221,33 @@ const NewsletterDisplay: React.FC<{ newsletterData: NewsletterData, t: (key: str
         </div>
       )}
 
-      {/* Export button */}
-      <div className="text-center py-4">
+      {/* Export buttons */}
+      <div className="flex flex-wrap justify-center items-center gap-3 py-4">
         <button onClick={() => exportToHtml(newsletterData, topic)}
           className="inline-flex items-center gap-2 bg-[#062152] text-white font-semibold py-3 px-8 rounded-xl hover:bg-[#0a2d6e] transition-all duration-200 hover:shadow-lg">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
           {t('exportHtml')}
+        </button>
+        <button onClick={handleExportPdf}
+          disabled={isPdfExporting}
+          className="inline-flex items-center gap-2 bg-[#1054cc] text-white font-semibold py-3 px-8 rounded-xl hover:bg-[#0a3f9e] transition-all duration-200 hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed">
+          {isPdfExporting ? (
+            <>
+              <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+              {t('exportPdfBusy')}
+            </>
+          ) : (
+            <>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              {t('exportPdf')}
+            </>
+          )}
         </button>
       </div>
     </div>
